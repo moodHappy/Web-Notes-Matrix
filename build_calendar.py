@@ -110,7 +110,7 @@ def generate_index():
         <div class="page" id="page-1">
             <div class="container">
                 <div class="header">
-                    <h1><span>Syntax</span> Matrix</h1>
+                    <h1><span>Web</span> Matrix</h1>
                     <p>句子解构与语法实验室</p>
                     <button class="settings-btn" onclick="document.getElementById('modal').style.display='flex'">⚙️</button>
                 </div>
