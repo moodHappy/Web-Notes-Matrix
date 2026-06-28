@@ -5,6 +5,7 @@ on:
     paths:
       - 'docs/**/*.html'
       - '!docs/index.html'
+      - 'build_calendar.py'  # 新增：当 Python 脚本更新时自动触发
   workflow_dispatch:
 
 jobs:
