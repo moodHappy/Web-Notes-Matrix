@@ -6,7 +6,7 @@ BASE_DIR = "docs"
 def generate_index():
     os.makedirs(BASE_DIR, exist_ok=True)
     archive_data = {}
-    
+
     years = [d for d in os.listdir(BASE_DIR) if d.isdigit()]
     for year in years:
         y_int = int(year) 
@@ -21,9 +21,10 @@ def generate_index():
                     parts = file.replace(".html", "").split('_')
                     if len(parts) >= 4:
                         d_int = int(parts[2]) 
-                        time_str = f"{parts[3][:2]}:{parts[3][2:]}"
+                        # 修复: 仅截取 2 到 4 位的字符作为分钟，过滤掉最后的秒数
+                        time_str = f"{parts[3][:2]}:{parts[3][2:4]}"
                         file_path = f"{year}/{month}/{file}"
-                        
+
                         title = "📌 网页摘录"
                         with open(os.path.join(BASE_DIR, year, month, file), 'r', encoding='utf-8') as f_html:
                             content = f_html.read(2000)
