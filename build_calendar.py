@@ -54,7 +54,7 @@ def generate_index():
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Web Matrix 枢纽</title>
     <style>
-        :root { --bg: #f4f7f6; --primary: #27ae60; --accent: #e67e22; --card: #ffffff; --border: #d1d8d5; --text: #2d3436; }
+        :root { --bg: #f4f7f6; --primary: #3b82f6; --accent: #f59e0b; --card: #ffffff; --border: #e2e8f0; --text: #2d3436; }
         body, html { font-family: -apple-system, "Segoe UI", sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); height: 100%; overflow: hidden; }
         
         .viewport { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; height: 100vh; -webkit-overflow-scrolling: touch; }
@@ -68,8 +68,12 @@ def generate_index():
         .header p { margin: 0; font-size: 0.9rem; color: #7f8c8d; letter-spacing: 1px; }
         .settings-btn { position: absolute; right: 0; top: 20px; background: none; border: none; font-size: 1.4rem; cursor: pointer; opacity: 0.8; }
         
-        .controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .select-box { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-weight: bold; background: var(--card); color: var(--primary); }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; }
+        .nav-btn { background: var(--primary); color: white; border: none; border-radius: 8px; width: 36px; height: 36px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; box-shadow: 0 2px 5px rgba(59,130,246,0.2); }
+        .nav-btn:active { transform: scale(0.95); opacity: 0.9; }
+        .today-btn { width: auto; padding: 0 16px; font-size: 0.95rem; }
+        .select-box { height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-weight: bold; background: var(--card); color: var(--primary); }
+        
         .calendar-wrapper { background: var(--card); padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #888; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
@@ -77,7 +81,7 @@ def generate_index():
         .day-cell.empty { visibility: hidden; }
         .day-cell.has-news { color: var(--text); background: #fdfdfd; border: 1px solid #f5f5f5; }
         .day-cell.no-news { color: #dcdde1; }
-        .day-cell.selected { background: #e8f8f5; color: var(--primary); border: 1px solid #1abc9c; }
+        .day-cell.selected { background: #eff6ff; color: var(--primary); border: 1px solid #60a5fa; }
         .day-cell.today { background: #fff9e6; border: 1px solid #f1c40f; }
         .dot { width: 5px; height: 5px; background: var(--primary); border-radius: 50%; position: absolute; bottom: 5px; display: none; }
         .day-cell.has-news .dot { display: block; }
@@ -91,10 +95,10 @@ def generate_index():
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--primary); font-size: 0.95rem; }
         .form-control { width: 100%; box-sizing: border-box; padding: 15px; border: 1px solid var(--border); border-radius: 10px; font-size: 1rem; font-family: inherit; resize: vertical; background: var(--card); }
-        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(39,174,96,0.1); }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
         textarea.form-control { min-height: 120px; line-height: 1.5; }
-        .btn-push { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.15rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(39,174,96,0.3); transition: background 0.2s; }
-        .btn-push:active { transform: scale(0.98); background: #1e8449; }
+        .btn-push { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.15rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(59,130,246,0.3); transition: background 0.2s; }
+        .btn-push:active { transform: scale(0.98); background: #2563eb; }
         .btn-push:disabled { background: #95a5a6; cursor: not-allowed; box-shadow: none; }
         
         .modal { display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
@@ -115,6 +119,7 @@ def generate_index():
                     <button class="settings-btn" onclick="document.getElementById('modal').style.display='flex'">⚙️</button>
                 </div>
                 <div class="controls">
+                    <button class="nav-btn" id="prevMonthBtn">&lt;</button>
                     <select class="select-box" id="yearSelect"></select>
                     <select class="select-box" id="monthSelect">
                         <option value="1">01月</option><option value="2">02月</option><option value="3">03月</option>
@@ -122,6 +127,8 @@ def generate_index():
                         <option value="7">07月</option><option value="8">08月</option><option value="9">09月</option>
                         <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
                     </select>
+                    <button class="nav-btn" id="nextMonthBtn">&gt;</button>
+                    <button class="nav-btn today-btn" id="todayBtn">今日</button>
                 </div>
                 <div class="calendar-wrapper">
                     <div class="weekdays"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
@@ -179,6 +186,10 @@ def generate_index():
         const monthSelect = document.getElementById('monthSelect');
         const daysGrid = document.getElementById('daysGrid');
         
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+        const todayBtn = document.getElementById('todayBtn');
+        
         function initSelects() {
             const years = Object.keys(archiveData).map(Number).sort((a,b)=>b-a);
             if(!years.includes(sY)) years.unshift(sY);
@@ -188,6 +199,48 @@ def generate_index():
             });
             yearSelect.value = sY; monthSelect.value = sM;
         }
+
+        function syncControlsAndRender() {
+            let yearExists = false;
+            for(let i=0; i<yearSelect.options.length; i++){
+                if(yearSelect.options[i].value == sY) { yearExists = true; break; }
+            }
+            if(!yearExists) {
+                const opt = document.createElement('option'); opt.value = sY; opt.textContent = sY + '年';
+                yearSelect.appendChild(opt);
+                const opts = Array.from(yearSelect.options).sort((a,b) => b.value - a.value);
+                yearSelect.innerHTML = '';
+                opts.forEach(o => yearSelect.appendChild(o));
+            }
+            yearSelect.value = sY;
+            monthSelect.value = sM;
+            
+            // 修正当月天数越界（例如从31号切换到2月）
+            const daysInMonth = new Date(sY, sM, 0).getDate();
+            if (sD > daysInMonth) sD = daysInMonth;
+
+            renderCalendar();
+            renderList();
+        }
+
+        prevMonthBtn.onclick = () => {
+            sM--;
+            if (sM < 1) { sM = 12; sY--; }
+            syncControlsAndRender();
+        };
+
+        nextMonthBtn.onclick = () => {
+            sM++;
+            if (sM > 12) { sM = 1; sY++; }
+            syncControlsAndRender();
+        };
+
+        todayBtn.onclick = () => {
+            sY = today.getFullYear();
+            sM = today.getMonth() + 1;
+            sD = today.getDate();
+            syncControlsAndRender();
+        };
         
         function renderCalendar() {
             daysGrid.innerHTML = '';
@@ -230,8 +283,8 @@ def generate_index():
             }
         }
         
-        yearSelect.onchange = e => { sY = parseInt(e.target.value); renderCalendar(); renderList(); };
-        monthSelect.onchange = e => { sM = parseInt(e.target.value); renderCalendar(); renderList(); };
+        yearSelect.onchange = e => { sY = parseInt(e.target.value); syncControlsAndRender(); };
+        monthSelect.onchange = e => { sM = parseInt(e.target.value); syncControlsAndRender(); };
         
         initSelects(); 
         renderCalendar(); 
@@ -322,12 +375,12 @@ def generate_index():
     <title>${title}</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></scr` + `ipt>
     <style>
-        :root { --bg: #fcfcfc; --surface: #ffffff; --text: #2c3e50; --border: #ecf0f1; --accent: #27ae60; --highlight: #eafaf1; }
+        :root { --bg: #fcfcfc; --surface: #ffffff; --text: #2c3e50; --border: #ecf0f1; --accent: #3b82f6; --highlight: #eff6ff; }
         body { font-family: -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
         .container { max-width: 700px; margin: 0 auto; padding-bottom: 50px;}
         .nav-back { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;}
         .nav-back a { text-decoration: none; color: white; background: var(--text); padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .sync-status { font-size: 0.85rem; color: #27ae60; font-weight: bold; display: none; }
+        .sync-status { font-size: 0.85rem; color: #3b82f6; font-weight: bold; display: none; }
         
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .card-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #95a5a6; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; font-weight: bold;}
@@ -347,7 +400,7 @@ def generate_index():
         .markdown-body p:empty { display: none; } 
         .markdown-body br + br { display: none; } 
         
-        .markdown-body blockquote { margin: 0 0 10px 0; padding: 10px 15px; background: var(--highlight); border-left: 5px solid #2ecc71; color: #145a32; font-family: Georgia, serif; font-size: 1.1rem; border-radius: 0 8px 8px 0; }
+        .markdown-body blockquote { margin: 0 0 10px 0; padding: 10px 15px; background: var(--highlight); border-left: 5px solid #3b82f6; color: #1e3a8a; font-family: Georgia, serif; font-size: 1.1rem; border-radius: 0 8px 8px 0; }
         .markdown-body blockquote p { margin-bottom: 0; }
         .markdown-body hr { border: 0; border-top: 1px dashed #bdc3c7; margin: 15px 0; }
         .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 0.95rem; }
@@ -355,7 +408,7 @@ def generate_index():
         .markdown-body th { background: #f8f9fa; color: var(--accent); }
         
         /* 无痕静默编辑区 */
-        .edit-textarea { width: 100%; min-height: 250px; padding: 15px; font-family: monospace; font-size: 1.05rem; border: 2px solid var(--accent); border-radius: 10px; box-sizing: border-box; resize: vertical; display: none; background: #fff; color: #2c3e50; line-height: 1.5; outline: none; box-shadow: 0 4px 15px rgba(39,174,96,0.1);}
+        .edit-textarea { width: 100%; min-height: 250px; padding: 15px; font-family: monospace; font-size: 1.05rem; border: 2px solid var(--accent); border-radius: 10px; box-sizing: border-box; resize: vertical; display: none; background: #fff; color: #2c3e50; line-height: 1.5; outline: none; box-shadow: 0 4px 15px rgba(59,130,246,0.1);}
     </style>
 </head>
 <body>
@@ -470,7 +523,7 @@ def generate_index():
                 if(!token) return;
 
                 statusMsg.style.display = 'block';
-                statusMsg.style.color = '#27ae60';
+                statusMsg.style.color = '#3b82f6';
                 statusMsg.innerText = '📡 静默同步中...';
                 
                 const pureHtml = reconstructSelfHTML(newText);
@@ -498,7 +551,7 @@ def generate_index():
                     });
                     
                     if(putRes.ok) {
-                        statusMsg.style.color = '#27ae60';
+                        statusMsg.style.color = '#3b82f6';
                         statusMsg.innerText = '✅ 云端已同步';
                         setTimeout(() => statusMsg.style.display = 'none', 3000);
                     } else {
