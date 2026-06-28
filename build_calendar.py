@@ -21,7 +21,7 @@ def generate_index():
                     parts = file.replace(".html", "").split('_')
                     if len(parts) >= 4:
                         d_int = int(parts[2]) 
-                        # 修复: 仅截取 2 到 4 位的字符作为分钟，过滤掉最后的秒数
+                        # 保留了时间截取修复：仅截取 2 到 4 位的字符作为分钟
                         time_str = f"{parts[3][:2]}:{parts[3][2:4]}"
                         file_path = f"{year}/{month}/{file}"
 
@@ -45,7 +45,7 @@ def generate_index():
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Web Notes 枢纽</title>
     <style>
-        :root { --bg: #f5f5f7; --primary: #2980b9; --accent: #27ae60; --card: #ffffff; --border: #e0e0e0; --text: #333; }
+        :root { --bg: #f5f5f7; --primary: #2980b9; --accent: #27ae60; --card: #ffffff; --border: #e0e0e0; --text: #333; --btn-blue: #6482f0; }
         body, html { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); height: 100%; overflow: auto; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { text-align: center; padding: 20px 0; border-bottom: 1px dashed var(--border); margin-bottom: 20px; }
@@ -53,8 +53,31 @@ def generate_index():
         .header h1 span { color: var(--accent); }
         .header p { margin: 0; font-size: 0.9rem; color: #7f8c8d; letter-spacing: 1px; }
         
-        .controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .select-box { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-weight: bold; background: var(--card); color: var(--primary); }
+        /* 更新了 controls 布局，支持新按钮 */
+        .controls { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; }
+        .select-box { padding: 0 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; font-weight: bold; background: var(--card); color: var(--primary); height: 36px; box-sizing: border-box; font-size: 0.95rem; }
+        
+        /* 新增按钮样式 */
+        .btn-nav, .btn-today {
+            background-color: var(--btn-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 36px;
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+        .btn-nav { width: 36px; padding: 0; }
+        .btn-today { padding: 0 12px; }
+        .btn-nav:active, .btn-today:active { transform: scale(0.95); }
+        .btn-nav:hover, .btn-today:hover { opacity: 0.9; }
+
         .calendar-wrapper { background: var(--card); padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #888; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
@@ -80,6 +103,7 @@ def generate_index():
             <p>全网摘录与深度笔记枢纽</p>
         </div>
         <div class="controls">
+            <button class="btn-nav" id="prevMonthBtn">&lt;</button>
             <select class="select-box" id="yearSelect"></select>
             <select class="select-box" id="monthSelect">
                 <option value="1">01月</option><option value="2">02月</option><option value="3">03月</option>
@@ -87,6 +111,8 @@ def generate_index():
                 <option value="7">07月</option><option value="8">08月</option><option value="9">09月</option>
                 <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
             </select>
+            <button class="btn-nav" id="nextMonthBtn">&gt;</button>
+            <button class="btn-today" id="todayBtn">回到今天</button>
         </div>
         <div class="calendar-wrapper">
             <div class="weekdays"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
@@ -107,11 +133,33 @@ def generate_index():
         function initSelects() {
             const years = Object.keys(archiveData).map(Number).sort((a,b)=>b-a);
             if(!years.includes(sY)) years.unshift(sY);
+            yearSelect.innerHTML = ''; // 清空重新生成
             years.forEach(y => {
                 const opt = document.createElement('option'); opt.value = y; opt.textContent = y + '年';
                 yearSelect.appendChild(opt);
             });
             yearSelect.value = sY; monthSelect.value = sM;
+        }
+
+        // 同步 UI 状态，确保下拉框和当前 sY, sM 保持一致
+        function syncUI() {
+            let yearFound = false;
+            for(let i=0; i<yearSelect.options.length; i++) {
+                if(parseInt(yearSelect.options[i].value) === sY) { yearFound = true; break; }
+            }
+            // 如果切换到了一个下拉框里没有的年份，动态添加进去
+            if(!yearFound) {
+                const opt = document.createElement('option'); opt.value = sY; opt.textContent = sY + '年';
+                yearSelect.appendChild(opt);
+            }
+            yearSelect.value = sY;
+            monthSelect.value = sM;
+        }
+
+        // 限制日期合法性 (防止例如 1月31日 切到 2月变成 2月31日)
+        function clampDate() {
+            const daysInMonth = new Date(sY, sM, 0).getDate();
+            if (sD > daysInMonth) sD = daysInMonth;
         }
         
         function renderCalendar() {
@@ -153,8 +201,28 @@ def generate_index():
             }
         }
         
-        yearSelect.onchange = e => { sY = parseInt(e.target.value); renderCalendar(); renderList(); };
-        monthSelect.onchange = e => { sM = parseInt(e.target.value); renderCalendar(); renderList(); };
+        yearSelect.onchange = e => { sY = parseInt(e.target.value); clampDate(); renderCalendar(); renderList(); };
+        monthSelect.onchange = e => { sM = parseInt(e.target.value); clampDate(); renderCalendar(); renderList(); };
+
+        // 按钮事件绑定
+        document.getElementById('prevMonthBtn').onclick = () => {
+            sM--;
+            if(sM < 1) { sM = 12; sY--; }
+            clampDate(); syncUI(); renderCalendar(); renderList();
+        };
+
+        document.getElementById('nextMonthBtn').onclick = () => {
+            sM++;
+            if(sM > 12) { sM = 1; sY++; }
+            clampDate(); syncUI(); renderCalendar(); renderList();
+        };
+
+        document.getElementById('todayBtn').onclick = () => {
+            sY = today.getFullYear();
+            sM = today.getMonth() + 1;
+            sD = today.getDate();
+            syncUI(); renderCalendar(); renderList();
+        };
         
         initSelects(); 
         renderCalendar(); 
