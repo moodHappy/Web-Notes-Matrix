@@ -5,7 +5,7 @@ on:
     paths:
       - 'docs/**/*.html'
       - '!docs/index.html'
-      - 'build_calendar.py'  # 新增：当 Python 脚本更新时自动触发
+      - 'build_calendar.py'
   workflow_dispatch:
 
 jobs:
@@ -31,4 +31,4 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add docs/index.html
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Calendar: Synchronized new web note" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Calendar: Synchronized new web note [skip ci]" && git push)
