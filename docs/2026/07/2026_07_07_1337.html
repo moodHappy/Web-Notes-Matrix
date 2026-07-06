@@ -22,7 +22,7 @@
     <div class="container">
         <h1></h1>
         <div class="meta">
-            <span>📅 2026-07-06 20:02</span>
+            <span>📅 2026-07-06 20:17</span>
             <a href="https://cn.nytimes.com/china/20260706/china-xi-leadership-cai-qi/dual/" target="_blank">🔗 阅读原文</a>
             <a href="../../index.html">🔙 返回日历</a>
         </div>
@@ -82,30 +82,35 @@
         </div>
     </div>
     
-<!-- ================= 手机端 Anki 推送功能模块 ================= -->
-<div id="anki-fab" title="推送到Anki" style="position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: #121212; color: #fff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; z-index: 999999; user-select: none;">
+<!-- ================= 手机端 Anki 推送 (剪贴板通道版) ================= -->
+<div id="anki-fab" title="复制指令到剪贴板" style="position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: #121212; color: #fff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; z-index: 999999; user-select: none;">
     📌
 </div>
-<div id="anki-toast" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; display: none; z-index: 999999; white-space: nowrap;"></div>
+<div id="anki-toast" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; display: none; z-index: 999999; white-space: pre-wrap; text-align: center; line-height: 1.5;"></div>
 
 <script>
     (function() {
-        // 使用 127.0.0.1 而非 localhost，在 Edge 移动端更容易被判定为 Loopback 从而放行
-        const ANKI_URL = "http://127.0.0.1:8765";
-        const DECK_NAME = "Collins";
-        const SOURCE_FIELD = "单词";
-        const TARGET_FIELD = "Source-news-1";
-
         const fab = document.getElementById('anki-fab');
         const toast = document.getElementById('anki-toast');
 
-        function showToast(msg) {
+        function showToast(msg, duration = 3000) {
             toast.innerText = msg;
             toast.style.display = 'block';
-            setTimeout(function() { toast.style.display = 'none'; }, 3000);
+            setTimeout(function() { toast.style.display = 'none'; }, duration);
         }
 
-        fab.addEventListener('click', async function() {
+        function fallbackCopy(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try { document.execCommand('copy'); } catch (err) {}
+            document.body.removeChild(textArea);
+        }
+
+        fab.addEventListener('click', function() {
             const sel = window.getSelection();
             const word = sel.toString().trim();
 
@@ -130,47 +135,30 @@
                 zhText = nextNode.innerText.replace(/[\s\n]+/g, ' ').trim();
             }
 
+            // 拼装你的特定数据格式
             const targetData = window.location.href + "|" + engText + (zhText ? "<br><br>" + zhText : "");
 
-            try {
-                showToast("⏳ 正在推送到 Anki...");
-                const queryStr = '"deck:' + DECK_NAME + '" "' + SOURCE_FIELD + ':' + word + '"';
+            // 构建特定指令头，方便后台脚本识别
+            const payload = JSON.stringify({
+                _ANKI_INJECTOR_SIGNAL: true,
+                word: word,
+                target: targetData
+            });
 
-                // 核心通信部分：发起 fetch 请求
-                const findRes = await fetch(ANKI_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "findNotes", version: 6, params: { query: queryStr } })
+            // 写入系统剪贴板
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(payload).then(() => {
+                    showToast("✅ 已生成指令放入剪贴板\n后台脚本将自动拦截并推入 Anki");
+                    sel.removeAllRanges();
+                }).catch(() => {
+                    fallbackCopy(payload);
+                    showToast("✅ (兼容模式) 已放入剪贴板，等待后台注入");
+                    sel.removeAllRanges();
                 });
-
-                const findJson = await findRes.json();
-
-                if (findJson.error) throw new Error(findJson.error);
-                if (!findJson.result || findJson.result.length === 0) {
-                    showToast("❌ 牌组内未找到单词: " + word);
-                    return;
-                }
-
-                const updateRes = await fetch(ANKI_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "updateNoteFields",
-                        version: 6,
-                        params: { note: { id: findJson.result[0], fields: { [TARGET_FIELD]: targetData } } }
-                    })
-                });
-                const updateJson = await updateRes.json();
-
-                if (updateJson.error) throw new Error(updateJson.error);
-
-                showToast("✅ 更新成功: " + word);
+            } else {
+                fallbackCopy(payload);
+                showToast("✅ 已放入剪贴板，等待后台注入");
                 sel.removeAllRanges();
-
-            } catch (err) {
-                console.error(err);
-                // 提供最精确的排障信息
-                showToast("❌ 请求被浏览器或Anki拦截。请前往 edge://flags 禁用 Block insecure private network requests");
             }
         });
     })();
