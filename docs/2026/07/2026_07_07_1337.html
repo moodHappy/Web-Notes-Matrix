@@ -22,7 +22,7 @@
     <div class="container">
         <h1></h1>
         <div class="meta">
-            <span>📅 2026-07-06 20:29</span>
+            <span>📅 2026-07-06 20:35</span>
             <a href="https://cn.nytimes.com/china/20260706/china-xi-leadership-cai-qi/dual/" target="_blank">🔗 阅读原文</a>
             <a href="../../index.html">🔙 返回日历</a>
         </div>
@@ -161,7 +161,7 @@
             // 拼装特定的目标数据格式
             const targetData = window.location.href + "|" + engText + (zhText ? "<br><br>" + zhText : "");
 
-            // 构建特定指令头，方便后台 Python 脚本识别
+            // 构建特定指令头，方便后台 Python 脚本识别。已修改为 Source-news-3
             const payload = JSON.stringify({
                 _ANKI_INJECTOR_SIGNAL: true,
                 word: word,
