@@ -22,7 +22,7 @@
     <div class="container">
         <h1></h1>
         <div class="meta">
-            <span>📅 2026-07-06 20:56</span>
+            <span>📅 2026-07-06 21:07</span>
             <a href="https://cn.nytimes.com/china/20260706/china-xi-leadership-cai-qi/dual/" target="_blank">🔗 阅读原文</a>
             <a href="../../index.html">🔙 返回日历</a>
         </div>
@@ -81,103 +81,5 @@
             <p>邓聿文还表示，即便明年蔡奇因年龄原因退下来，他仍可能继续担任中央党校校长。届时，蔡奇可能继续充当习近平的耳目，在未来几年为其物色、考察和筛选有望晋升的官员人选。</p>
         </div>
     </div>
-    
-<!-- ================= 手机端 Anki 推送 (全页一键打包版) ================= -->
-<div id="anki-fab" title="一键打包全页单词" style="position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: #121212; color: #fff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; z-index: 999999; user-select: none;">
-    🚀
-</div>
-<div id="anki-toast" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; display: none; z-index: 999999; white-space: pre-wrap; text-align: center; line-height: 1.5;"></div>
-
-<script>
-    (function() {
-        const fab = document.getElementById('anki-fab');
-        const toast = document.getElementById('anki-toast');
-
-        function showToast(msg, duration = 3000) {
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(function() { toast.style.display = 'none'; }, duration);
-        }
-
-        function fallbackCopy(text) {
-            var textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try { document.execCommand('copy'); } catch (err) {}
-            document.body.removeChild(textArea);
-        }
-
-        fab.addEventListener('click', function() {
-            showToast("⏳ 正在扫描并打包全页单词...", 1000);
-
-            let uniqueWords = new Set();
-            let items = [];
-            const pNodes = document.querySelectorAll('.content p');
-
-            for (let i = 0; i < pNodes.length; i++) {
-                let pNode = pNodes[i];
-                let pText = pNode.textContent.replace(/\s+/g, ' ').trim();
-
-                // 跳过纯中文段落
-                if (/[\u4e00-\u9fa5]/.test(pText)) continue;
-
-                let engText = pText;
-                let zhText = "";
-
-                let nextNode = pNode.nextElementSibling;
-                while (nextNode && nextNode.tagName.toLowerCase() !== 'p') {
-                    nextNode = nextNode.nextElementSibling;
-                }
-                if (nextNode && /[\u4e00-\u9fa5]/.test(nextNode.textContent)) {
-                    zhText = nextNode.textContent.replace(/\s+/g, ' ').trim();
-                }
-
-                const targetData = window.location.href + "|" + engText + (zhText ? "<br><br>" + zhText : "");
-
-                // 使用正则提取该段落的所有英文单词
-                const words = engText.match(/[a-zA-Z]+/g) || [];
-
-                words.forEach(w => {
-                    let originalWord = w;
-                    let lowerW = w.toLowerCase();
-                    // 过滤掉已被记录过的词，以及长度为 1 的字母 (如 a, I)
-                    if (!uniqueWords.has(lowerW) && lowerW.length > 1) {
-                        uniqueWords.add(lowerW);
-                        items.push({ word: originalWord, target: targetData });
-                    }
-                });
-            }
-
-            if (items.length === 0) {
-                showToast("⚠️ 未能在正文中找到任何英文！");
-                return;
-            }
-
-            // 构建特定的批量指令数据结构
-            const payload = JSON.stringify({
-                _ANKI_BULK_SIGNAL: true,
-                items: items
-            });
-
-            // 写入系统剪贴板
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(payload).then(() => {
-                    showToast("✅ 已成功打包全页 " + items.length + " 个独立单词\n后台脚本将自动比对注入！");
-                }).catch(() => {
-                    fallbackCopy(payload);
-                    showToast("✅ (兼容模式) 已成功打包全页，等待后台注入");
-                });
-            } else {
-                fallbackCopy(payload);
-                showToast("✅ 已打包全页放入剪贴板，等待后台批量比对注入");
-            }
-        });
-    })();
-</script>
-<!-- ========================================================== -->
-
 </body>
 </html>
