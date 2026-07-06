@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -23,7 +22,7 @@
     <div class="container">
         <h1></h1>
         <div class="meta">
-            <span>📅 2026-07-06 20:35</span>
+            <span>📅 2026-07-06 20:52</span>
             <a href="https://cn.nytimes.com/china/20260706/china-xi-leadership-cai-qi/dual/" target="_blank">🔗 阅读原文</a>
             <a href="../../index.html">🔙 返回日历</a>
         </div>
@@ -83,9 +82,9 @@
         </div>
     </div>
     
-<!-- ================= 手机端 Anki 推送 (智能双语剪贴板通道版) ================= -->
-<div id="anki-fab" title="复制指令到剪贴板" style="position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: #121212; color: #fff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; z-index: 999999; user-select: none;">
-    📌
+<!-- ================= 手机端 Anki 推送 (全页一键打包版) ================= -->
+<div id="anki-fab" title="一键打包全页单词" style="position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: #121212; color: #fff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; z-index: 999999; user-select: none;">
+    🚀
 </div>
 <div id="anki-toast" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; display: none; z-index: 999999; white-space: pre-wrap; text-align: center; line-height: 1.5;"></div>
 
@@ -112,77 +111,68 @@
         }
 
         fab.addEventListener('click', function() {
-            const sel = window.getSelection();
-            const word = sel.toString().trim();
+            showToast("⏳ 正在扫描并打包全页单词...", 1000);
 
-            if (!word || word.split(/\s+/).length > 4) {
-                showToast("⚠️ 请先长按选中一个目标单词！");
-                return;
-            }
+            let uniqueWords = new Set();
+            let items = [];
+            const pNodes = document.querySelectorAll('.content p');
 
-            let anchorNode = sel.anchorNode;
-            let pNode = anchorNode.nodeType === 3 ? anchorNode.parentNode.closest('p') : anchorNode.closest('p');
+            for (let i = 0; i < pNodes.length; i++) {
+                let pNode = pNodes[i];
+                let pText = pNode.textContent.replace(/\s+/g, ' ').trim();
 
-            if (!pNode) {
-                showToast("⚠️ 未能定位到正文段落");
-                return;
-            }
+                // 跳过纯中文段落
+                if (/[\u4e00-\u9fa5]/.test(pText)) continue;
 
-            let engText = "";
-            let zhText = "";
+                let engText = pText;
+                let zhText = "";
 
-            // 采用底层 textContent 避免隐藏字符干扰，彻底清理多余空格
-            let pText = pNode.textContent.replace(/\s+/g, ' ').trim();
-            let isChinese = /[一-龥]/.test(pText);
-
-            if (isChinese) {
-                // 如果划词选中了中文段落，则抓取自己，并向上寻找对应的英文段落
-                zhText = pText;
-                let prevNode = pNode.previousElementSibling;
-                // 强制忽略中间可能的非 p 节点
-                while (prevNode && prevNode.tagName.toLowerCase() !== 'p') {
-                    prevNode = prevNode.previousElementSibling;
-                }
-                if (prevNode) {
-                    engText = prevNode.textContent.replace(/\s+/g, ' ').trim();
-                }
-            } else {
-                // 如果划词选中了英文段落，则抓取自己，并向下寻找对应的中文段落
-                engText = pText;
                 let nextNode = pNode.nextElementSibling;
-                // 强制忽略中间可能的非 p 节点
                 while (nextNode && nextNode.tagName.toLowerCase() !== 'p') {
                     nextNode = nextNode.nextElementSibling;
                 }
-                if (nextNode && /[一-龥]/.test(nextNode.textContent)) {
+                if (nextNode && /[\u4e00-\u9fa5]/.test(nextNode.textContent)) {
                     zhText = nextNode.textContent.replace(/\s+/g, ' ').trim();
                 }
+
+                const targetData = window.location.href + "|" + engText + (zhText ? "<br><br>" + zhText : "");
+
+                // 使用正则提取该段落的所有英文单词
+                const words = engText.match(/[a-zA-Z]+/g) || [];
+
+                words.forEach(w => {
+                    let originalWord = w;
+                    let lowerW = w.toLowerCase();
+                    // 过滤掉已被记录过的词，以及长度为 1 的字母 (如 a, I)
+                    if (!uniqueWords.has(lowerW) && lowerW.length > 1) {
+                        uniqueWords.add(lowerW);
+                        items.push({ word: originalWord, target: targetData });
+                    }
+                });
             }
 
-            // 拼装特定的目标数据格式
-            const targetData = window.location.href + "|" + engText + (zhText ? "<br><br>" + zhText : "");
+            if (items.length === 0) {
+                showToast("⚠️ 未能在正文中找到任何英文！");
+                return;
+            }
 
-            // 构建特定指令头，方便后台 Python 脚本识别。已修改为 Source-news-3
+            // 构建特定的批量指令数据结构
             const payload = JSON.stringify({
-                _ANKI_INJECTOR_SIGNAL: true,
-                word: word,
-                target: targetData
+                _ANKI_BULK_SIGNAL: true,
+                items: items
             });
 
             // 写入系统剪贴板
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(payload).then(() => {
-                    showToast("✅ 已生成指令放入剪贴板\n后台脚本将自动拦截并推入 Anki");
-                    sel.removeAllRanges();
+                    showToast("✅ 已成功打包全页 " + items.length + " 个独立单词\n后台脚本将自动比对注入！");
                 }).catch(() => {
                     fallbackCopy(payload);
-                    showToast("✅ (兼容模式) 已放入剪贴板，等待后台注入");
-                    sel.removeAllRanges();
+                    showToast("✅ (兼容模式) 已成功打包全页，等待后台注入");
                 });
             } else {
                 fallbackCopy(payload);
-                showToast("✅ 已放入剪贴板，等待后台注入");
-                sel.removeAllRanges();
+                showToast("✅ 已打包全页放入剪贴板，等待后台批量比对注入");
             }
         });
     })();
