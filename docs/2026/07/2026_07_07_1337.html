@@ -22,7 +22,7 @@
     <div class="container">
         <h1></h1>
         <div class="meta">
-            <span>📅 2026-07-06 19:54</span>
+            <span>📅 2026-07-06 20:02</span>
             <a href="https://cn.nytimes.com/china/20260706/china-xi-leadership-cai-qi/dual/" target="_blank">🔗 阅读原文</a>
             <a href="../../index.html">🔙 返回日历</a>
         </div>
@@ -90,7 +90,8 @@
 
 <script>
     (function() {
-        const ANKI_URL = "http://localhost:8765";
+        // 使用 127.0.0.1 而非 localhost，在 Edge 移动端更容易被判定为 Loopback 从而放行
+        const ANKI_URL = "http://127.0.0.1:8765";
         const DECK_NAME = "Collins";
         const SOURCE_FIELD = "单词";
         const TARGET_FIELD = "Source-news-1";
@@ -101,7 +102,7 @@
         function showToast(msg) {
             toast.innerText = msg;
             toast.style.display = 'block';
-            setTimeout(function() { toast.style.display = 'none'; }, 2500);
+            setTimeout(function() { toast.style.display = 'none'; }, 3000);
         }
 
         fab.addEventListener('click', async function() {
@@ -134,10 +135,14 @@
             try {
                 showToast("⏳ 正在推送到 Anki...");
                 const queryStr = '"deck:' + DECK_NAME + '" "' + SOURCE_FIELD + ':' + word + '"';
+
+                // 核心通信部分：发起 fetch 请求
                 const findRes = await fetch(ANKI_URL, {
                     method: "POST",
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ action: "findNotes", version: 6, params: { query: queryStr } })
                 });
+
                 const findJson = await findRes.json();
 
                 if (findJson.error) throw new Error(findJson.error);
@@ -148,6 +153,7 @@
 
                 const updateRes = await fetch(ANKI_URL, {
                     method: "POST",
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         action: "updateNoteFields",
                         version: 6,
@@ -162,7 +168,9 @@
                 sel.removeAllRanges();
 
             } catch (err) {
-                showToast("❌ 失败: " + err.message + " (请确保 Anki 开启及跨域已配置)");
+                console.error(err);
+                // 提供最精确的排障信息
+                showToast("❌ 请求被浏览器或Anki拦截。请前往 edge://flags 禁用 Block insecure private network requests");
             }
         });
     })();
