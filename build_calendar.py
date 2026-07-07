@@ -191,8 +191,18 @@ def generate_index():
         const todayBtn = document.getElementById('todayBtn');
         
         function initSelects() {
-            const years = Object.keys(archiveData).map(Number).sort((a,b)=>b-a);
-            if(!years.includes(sY)) years.unshift(sY);
+            const baseYear = today.getFullYear();
+            let yearsSet = new Set(Object.keys(archiveData).map(Number));
+            
+            // 延续50年：这里生成从 过去10年 到 未来40年 的跨度，共计50年
+            // 既能满足查阅以前档案的需求，也能一直延用到未来
+            for (let i = -10; i <= 40; i++) {
+                yearsSet.add(baseYear + i);
+            }
+            
+            // 转换为数组并降序排列
+            const years = Array.from(yearsSet).sort((a,b) => b - a);
+            
             years.forEach(y => {
                 const opt = document.createElement('option'); opt.value = y; opt.textContent = y + '年';
                 yearSelect.appendChild(opt);
