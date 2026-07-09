@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Popularity can make or br...</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root { --bg: #fcfcfc; --surface: #ffffff; --text: #2c3e50; --border: #ecf0f1; --accent: #2980b9; --highlight: #fef9e7; }
+        body { font-family: -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; padding-bottom: 50px;}
+        .nav-back { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;}
+        .nav-back a { text-decoration: none; color: white; background: var(--text); padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .sync-status { font-size: 0.85rem; color: #27ae60; font-weight: bold; display: none; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .card-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #95a5a6; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; font-weight: bold;}
+        .markdown-body { font-size: 1.05rem; line-height: 1.6; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--accent); margin-top: 16px; margin-bottom: 8px; font-weight: 700; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+
+        #view-original p { margin-bottom: 16px; color: #34495e; font-family: Georgia, serif; font-size: 1.15rem; line-height: 1.8; }
+        #view-original p:last-child { margin-bottom: 0; }
+
+        .markdown-body p { margin-top: 0; margin-bottom: 12px; }
+        .markdown-body ul, .markdown-body ol { margin-top: 0; margin-bottom: 8px; padding-left: 20px; }
+        .markdown-body li { margin-bottom: 4px; }
+        .markdown-body blockquote { margin: 0 0 10px 0; padding: 10px 15px; background: var(--highlight); border-left: 5px solid #f1c40f; color: #5c4d22; font-family: Georgia, serif; font-size: 1.1rem; border-radius: 0 8px 8px 0; }
+        .markdown-body hr { border: 0; border-top: 1px dashed #bdc3c7; margin: 15px 0; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 0.95rem; }
+        .markdown-body th, .markdown-body td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+        .markdown-body th { background: #f8f9fa; color: var(--accent); }
+        .edit-textarea { width: 100%; min-height: 150px; padding: 15px; font-family: monospace; font-size: 1.05rem; border: 2px solid var(--accent); border-radius: 10px; box-sizing: border-box; resize: vertical; display: none; background: #fff; color: #2c3e50; line-height: 1.5; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-back">
+            <a href="../../index.html">🔙 返回矩阵枢纽</a>
+            <span class="sync-status" id="sync-status">📡 同步中...</span>
+        </div>
+        <textarea id="raw-original" style="display:none;">Popularity can make or break a career in show business. But for one celebrity in China, even a legion of devoted fans was not enough to stave off the wrath of the internet.</textarea>
+        <textarea id="raw-analysis" style="display:none;"># 📌 完整翻译
+
+在演艺圈，受欢迎程度可以决定一个人的事业成败。
+
+但对于中国的一位明星来说，即使拥有一大批忠实粉丝，也不足以抵挡互联网的愤怒。
+
+---
+
+# 📘 英语教学式讲解
+
+## 1. Popularity can make or break a career in show business.
+
+- 人气可以成就一个演艺事业，也可以毁掉它。
+
+### popularity
+- 受欢迎程度、人气。
+
+来自：
+
+- popular（受欢迎的）
+- -ity（表示性质）
+
+例如：
+
+- The popularity of the movie surprised everyone.
+  这部电影的受欢迎程度让所有人惊讶。
+
+---
+
+### make or break
+这是一个固定表达：
+
+&gt; 决定成败。
+
+其中：
+
+- make：
+  使成功。
+
+- break：
+  使失败、毁掉。
+
+例如：
+
+- This game could make or break his career.
+  这场比赛可能决定他的职业生涯成败。
+
+---
+
+### a career in show business
+- 演艺事业。
+
+### show business
+简称：
+
+&gt; showbiz
+
+指：
+
+- 娱乐圈
+- 演艺行业
+
+包括：
+
+- actors
+- singers
+- TV personalities
+
+---
+
+# 2. But for one celebrity in China
+
+- 但对于中国的一位明星来说。
+
+### celebrity
+- 名人、明星。
+
+注意区别：
+
+- famous person：
+  著名人物（范围广）
+
+- celebrity：
+  通常指公众人物，尤其娱乐明星。
+
+---
+
+# 3. even a legion of devoted fans was not enough
+
+- 即使一大批忠实粉丝也不够。
+
+### even
+- 即使、哪怕。
+
+强调让步。
+
+---
+
+### a legion of
+- 大批的、数量庞大的。
+
+原意：
+
+&gt; 军团。
+
+来自拉丁语中的军队概念。
+
+现在常用于夸张：
+
+- a legion of supporters
+  大批支持者
+
+---
+
+### devoted fans
+- 忠实粉丝。
+
+### devoted
+- 忠诚的、投入的。
+
+例如：
+
+- a devoted husband
+  忠诚的丈夫
+
+- devoted fans
+  死忠粉
+
+---
+
+# 4. to stave off the wrath of the internet
+
+- 来抵挡互联网的愤怒。
+
+### stave off
+- 防止、避免、挡住。
+
+这是较高级表达。
+
+例如：
+
+- stave off a crisis
+  避免危机
+
+- stave off hunger
+  暂时缓解饥饿
+
+---
+
+### wrath
+- 愤怒、震怒。
+
+比：
+
+- anger
+
+更强烈、更文学化。
+
+例如：
+
+- the wrath of God
+  上帝的震怒
+
+---
+
+### the internet
+这里不是指网络本身，而是：
+
+&gt; 网民舆论、网络公众。
+
+类似：
+
+- social media backlash
+  社交媒体反弹
+
+---
+
+# 📌 句子结构分析
+
+第一句：
+
+&gt; Popularity can make or break a career in show business.
+
+主语：
+
+Popularity（人气）
+
+↓
+
+作用：
+
+make or break（决定成败）
+
+↓
+
+对象：
+
+a career（事业）
+
+---
+
+第二句：
+
+&gt; even a legion of devoted fans was not enough to stave off the wrath of the internet.
+
+让步：
+
+even a legion of devoted fans
+
+↓
+
+结果：
+
+was not enough
+
+↓
+
+目的：
+
+to stave off...
+
+---
+
+# 📌 Language Note
+
+这两句用了强烈的对比：
+
+## 传统娱乐逻辑：
+
+&gt; Popularity = protection
+
+有粉丝 → 有影响力。
+
+↓
+
+## 网络时代：
+
+&gt; Internet backlash can overpower fandom
+
+即使粉丝众多，也可能被网络舆论击垮。
+
+---
+
+关键词：
+
+&gt; the wrath of the internet
+
+这是新闻中常见表达，用来描述：
+
+- 网络抵制
+- 舆论风暴
+- 大规模批评
+
+---
+
+# 📌 Key Expressions
+
+- popularity —— 人气；受欢迎程度
+- make or break —— 决定成败
+- show business —— 演艺圈
+- celebrity —— 名人；明星
+- legion of —— 大批的
+- devoted fans —— 忠实粉丝
+- be enough to do something —— 足以做某事
+- stave off —— 避免；抵挡
+- wrath —— 愤怒；震怒
+- the internet —— 网络舆论</textarea>
+        <textarea id="raw-page-title" style="display:none;">China&#039;s internet got so mad about a celebrity&#039;s &#039;bad&#039; singing, her concert was cancelled</textarea>
+        <textarea id="raw-page-url" style="display:none;">https://moodhappy.github.io/bbc-news-archive/docs/2026/7/2026_7_4_1026.html</textarea>
+
+        <div class="card" id="block-original">
+            <div class="card-header">📖 原始文本 (Original)</div>
+            <div class="source-info" style="margin-bottom: 12px; font-size: 0.9rem;">
+                <a href="https://moodhappy.github.io/bbc-news-archive/docs/2026/7/2026_7_4_1026.html" target="_blank" style="color: #2980b9; text-decoration: none; font-weight: bold;">🔗 China&#039;s internet got so mad about a celebrity&#039;s &#039;bad&#039; singing, her concert was cancelled</a>
+            </div>
+            <div id="view-original" class="markdown-body"></div>
+            <textarea id="edit-original" class="edit-textarea"></textarea>
+        </div>
+
+        <div class="card" id="block-analysis">
+            <div class="card-header">🔬 深度解构 (Analysis)</div>
+            <div id="view-analysis" class="markdown-body"></div>
+            <textarea id="edit-analysis" class="edit-textarea"></textarea>
+        </div>
+    </div>
+
+    <script>
+        const GH_OWNER = "moodHappy";
+        const GH_REPO = "Web-Notes-Matrix";
+        const ACCENT = "#2980b9";
+        function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+        const buildHTML = function(title, safeOrig, safeAnal, safePageTitle, safePageUrl, GH_OWNER, GH_REPO, accent, escapeFnStr, builderFnStr) {
+        return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>${title}</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></scr`+`ipt>
+    <style>
+        :root { --bg: #fcfcfc; --surface: #ffffff; --text: #2c3e50; --border: #ecf0f1; --accent: ${accent}; --highlight: #fef9e7; }
+        body { font-family: -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; padding-bottom: 50px;}
+        .nav-back { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;}
+        .nav-back a { text-decoration: none; color: white; background: var(--text); padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .sync-status { font-size: 0.85rem; color: #27ae60; font-weight: bold; display: none; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .card-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #95a5a6; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; font-weight: bold;}
+        .markdown-body { font-size: 1.05rem; line-height: 1.6; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--accent); margin-top: 16px; margin-bottom: 8px; font-weight: 700; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+
+        #view-original p { margin-bottom: 16px; color: #34495e; font-family: Georgia, serif; font-size: 1.15rem; line-height: 1.8; }
+        #view-original p:last-child { margin-bottom: 0; }
+
+        .markdown-body p { margin-top: 0; margin-bottom: 12px; }
+        .markdown-body ul, .markdown-body ol { margin-top: 0; margin-bottom: 8px; padding-left: 20px; }
+        .markdown-body li { margin-bottom: 4px; }
+        .markdown-body blockquote { margin: 0 0 10px 0; padding: 10px 15px; background: var(--highlight); border-left: 5px solid #f1c40f; color: #5c4d22; font-family: Georgia, serif; font-size: 1.1rem; border-radius: 0 8px 8px 0; }
+        .markdown-body hr { border: 0; border-top: 1px dashed #bdc3c7; margin: 15px 0; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 0.95rem; }
+        .markdown-body th, .markdown-body td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+        .markdown-body th { background: #f8f9fa; color: var(--accent); }
+        .edit-textarea { width: 100%; min-height: 150px; padding: 15px; font-family: monospace; font-size: 1.05rem; border: 2px solid var(--accent); border-radius: 10px; box-sizing: border-box; resize: vertical; display: none; background: #fff; color: #2c3e50; line-height: 1.5; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-back">
+            <a href="../../index.html">🔙 返回矩阵枢纽</a>
+            <span class="sync-status" id="sync-status">📡 同步中...</span>
+        </div>
+        <textarea id="raw-original" style="display:none;">${safeOrig}</textarea>
+        <textarea id="raw-analysis" style="display:none;">${safeAnal}</textarea>
+        <textarea id="raw-page-title" style="display:none;">${safePageTitle}</textarea>
+        <textarea id="raw-page-url" style="display:none;">${safePageUrl}</textarea>
+
+        <div class="card" id="block-original">
+            <div class="card-header">📖 原始文本 (Original)</div>
+            <div class="source-info" style="margin-bottom: 12px; font-size: 0.9rem;">
+                <a href="${safePageUrl}" target="_blank" style="color: ${accent}; text-decoration: none; font-weight: bold;">🔗 ${safePageTitle}</a>
+            </div>
+            <div id="view-original" class="markdown-body"></div>
+            <textarea id="edit-original" class="edit-textarea"></textarea>
+        </div>
+
+        <div class="card" id="block-analysis">
+            <div class="card-header">🔬 深度解构 (Analysis)</div>
+            <div id="view-analysis" class="markdown-body"></div>
+            <textarea id="edit-analysis" class="edit-textarea"></textarea>
+        </div>
+    </div>
+
+    <script>
+        const GH_OWNER = "${GH_OWNER}";
+        const GH_REPO = "${GH_REPO}";
+        const ACCENT = "${accent}";
+        ${escapeFnStr}
+        const buildHTML = ${builderFnStr};
+
+        const renderAll = function() {
+            const rawOrig = document.getElementById('raw-original').value;
+            const paragraphs = rawOrig.split(/\\n+/).filter(p => p.trim() !== '');
+            document.getElementById('view-original').innerHTML = paragraphs.map(p => '<p>' + escapeHTML(p) + '</p>').join('');
+
+            const analContent = document.getElementById('raw-analysis').value;
+            try {
+                if (typeof marked !== 'undefined') {
+                    document.getElementById('view-analysis').innerHTML = marked.parse(analContent);
+                }
+            } catch(e) {
+                console.error("Markdown failed", e);
+            }
+        };
+
+        const triggerEditOrig = function() {
+            const viewBlock = document.getElementById('view-original');
+            const editBlock = document.getElementById('edit-original');
+            viewBlock.style.display = 'none';
+            editBlock.style.display = 'block';
+            editBlock.value = document.getElementById('raw-original').value;
+            editBlock.focus();
+        };
+
+        const triggerEditAnal = function() {
+            const viewBlock = document.getElementById('view-analysis');
+            const editBlock = document.getElementById('edit-analysis');
+            viewBlock.style.display = 'none';
+            editBlock.style.display = 'block';
+            editBlock.value = document.getElementById('raw-analysis').value;
+            editBlock.focus();
+        };
+
+        window.onload = renderAll;
+
+        const saveToGitHub = async function() {
+            const token = localStorage.getItem('GH_TOKEN');
+            if(!token) return alert("⚠️ 缺少 GH_TOKEN。请确保在主枢纽页面配置过！");
+
+            const statusMsg = document.getElementById('sync-status');
+            statusMsg.style.display = 'block';
+            statusMsg.style.color = ACCENT;
+            statusMsg.innerText = '📡 静默同步中...';
+
+            const orig = document.getElementById('raw-original').value;
+            const anal = document.getElementById('raw-analysis').value;
+            const pTitle = document.getElementById('raw-page-title').value;
+            const pUrl = document.getElementById('raw-page-url').value;
+
+            const pureHtml = buildHTML(
+                document.title,
+                escapeHTML(orig),
+                escapeHTML(anal),
+                escapeHTML(pTitle),
+                escapeHTML(pUrl),
+                GH_OWNER,
+                GH_REPO,
+                ACCENT,
+                escapeHTML.toString(),
+                buildHTML.toString()
+            );
+
+            const path = window.location.pathname;
+            const fileRelPath = path.substring(path.indexOf('docs/'));
+            try {
+                const utf8Array = Array.from(new TextEncoder().encode(pureHtml));
+                const binaryString = utf8Array.map(b => String.fromCharCode(b)).join('');
+                const base64Html = btoa(binaryString);
+
+                const getRes = await fetch(\`https://api.github.com/repos/\${GH_OWNER}/\${GH_REPO}/contents/\${fileRelPath}\`, {
+                    headers: { 'Authorization': \`token \${token}\` }
+                });
+                const fileData = await getRes.json();
+
+                const putRes = await fetch(\`https://api.github.com/repos/\${GH_OWNER}/\${GH_REPO}/contents/\${fileRelPath}\`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': \`token \${token}\`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: \`Auto-save update (Text/Analysis)\`,
+                        content: base64Html,
+                        sha: fileData.sha
+                    })
+                });
+
+                if(putRes.ok) {
+                    statusMsg.style.color = '#27ae60';
+                    statusMsg.innerText = '✅ 云端已同步';
+                    setTimeout(() => statusMsg.style.display = 'none', 3000);
+                } else {
+                    statusMsg.style.color = '#e74c3c';
+                    statusMsg.innerText = '❌ 同步失败';
+                }
+            } catch(e) {
+                statusMsg.style.color = '#e74c3c';
+                statusMsg.innerText = '❌ 网络断开';
+            }
+        };
+
+        const viewOrig = document.getElementById('view-original');
+        const editOrig = document.getElementById('edit-original');
+        viewOrig.addEventListener('dblclick', triggerEditOrig);
+        viewOrig.addEventListener('touchstart', e => { if (e.touches.length === 2) triggerEditOrig(); });
+        editOrig.addEventListener('blur', async function() {
+            const newText = this.value.trim();
+            const oldText = document.getElementById('raw-original').value.trim();
+            this.style.display = 'none';
+            viewOrig.style.display = 'block';
+            if (newText && newText !== oldText) {
+                document.getElementById('raw-original').value = newText;
+                renderAll();
+                await saveToGitHub();
+            }
+        });
+
+        const viewAnal = document.getElementById('view-analysis');
+        const editAnal = document.getElementById('edit-analysis');
+        viewAnal.addEventListener('dblclick', triggerEditAnal);
+        viewAnal.addEventListener('touchstart', e => { if (e.touches.length === 2) triggerEditAnal(); });
+        editAnal.addEventListener('blur', async function() {
+            const newText = this.value.trim();
+            const oldText = document.getElementById('raw-analysis').value.trim();
+            this.style.display = 'none';
+            viewAnal.style.display = 'block';
+            if (newText && newText !== oldText) {
+                document.getElementById('raw-analysis').value = newText;
+                renderAll();
+                await saveToGitHub();
+            }
+        });
+    </scr`+`ipt>
+</body>
+</html>`;
+    };
+
+        const renderAll = function() {
+            const rawOrig = document.getElementById('raw-original').value;
+            const paragraphs = rawOrig.split(/\n+/).filter(p => p.trim() !== '');
+            document.getElementById('view-original').innerHTML = paragraphs.map(p => '<p>' + escapeHTML(p) + '</p>').join('');
+
+            const analContent = document.getElementById('raw-analysis').value;
+            try {
+                if (typeof marked !== 'undefined') {
+                    document.getElementById('view-analysis').innerHTML = marked.parse(analContent);
+                }
+            } catch(e) {
+                console.error("Markdown failed", e);
+            }
+        };
+
+        const triggerEditOrig = function() {
+            const viewBlock = document.getElementById('view-original');
+            const editBlock = document.getElementById('edit-original');
+            viewBlock.style.display = 'none';
+            editBlock.style.display = 'block';
+            editBlock.value = document.getElementById('raw-original').value;
+            editBlock.focus();
+        };
+
+        const triggerEditAnal = function() {
+            const viewBlock = document.getElementById('view-analysis');
+            const editBlock = document.getElementById('edit-analysis');
+            viewBlock.style.display = 'none';
+            editBlock.style.display = 'block';
+            editBlock.value = document.getElementById('raw-analysis').value;
+            editBlock.focus();
+        };
+
+        window.onload = renderAll;
+
+        const saveToGitHub = async function() {
+            const token = localStorage.getItem('GH_TOKEN');
+            if(!token) return alert("⚠️ 缺少 GH_TOKEN。请确保在主枢纽页面配置过！");
+
+            const statusMsg = document.getElementById('sync-status');
+            statusMsg.style.display = 'block';
+            statusMsg.style.color = ACCENT;
+            statusMsg.innerText = '📡 静默同步中...';
+
+            const orig = document.getElementById('raw-original').value;
+            const anal = document.getElementById('raw-analysis').value;
+            const pTitle = document.getElementById('raw-page-title').value;
+            const pUrl = document.getElementById('raw-page-url').value;
+
+            const pureHtml = buildHTML(
+                document.title,
+                escapeHTML(orig),
+                escapeHTML(anal),
+                escapeHTML(pTitle),
+                escapeHTML(pUrl),
+                GH_OWNER,
+                GH_REPO,
+                ACCENT,
+                escapeHTML.toString(),
+                buildHTML.toString()
+            );
+
+            const path = window.location.pathname;
+            const fileRelPath = path.substring(path.indexOf('docs/'));
+            try {
+                const utf8Array = Array.from(new TextEncoder().encode(pureHtml));
+                const binaryString = utf8Array.map(b => String.fromCharCode(b)).join('');
+                const base64Html = btoa(binaryString);
+
+                const getRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${fileRelPath}`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                const fileData = await getRes.json();
+
+                const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${fileRelPath}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Auto-save update (Text/Analysis)`,
+                        content: base64Html,
+                        sha: fileData.sha
+                    })
+                });
+
+                if(putRes.ok) {
+                    statusMsg.style.color = '#27ae60';
+                    statusMsg.innerText = '✅ 云端已同步';
+                    setTimeout(() => statusMsg.style.display = 'none', 3000);
+                } else {
+                    statusMsg.style.color = '#e74c3c';
+                    statusMsg.innerText = '❌ 同步失败';
+                }
+            } catch(e) {
+                statusMsg.style.color = '#e74c3c';
+                statusMsg.innerText = '❌ 网络断开';
+            }
+        };
+
+        const viewOrig = document.getElementById('view-original');
+        const editOrig = document.getElementById('edit-original');
+        viewOrig.addEventListener('dblclick', triggerEditOrig);
+        viewOrig.addEventListener('touchstart', e => { if (e.touches.length === 2) triggerEditOrig(); });
+        editOrig.addEventListener('blur', async function() {
+            const newText = this.value.trim();
+            const oldText = document.getElementById('raw-original').value.trim();
+            this.style.display = 'none';
+            viewOrig.style.display = 'block';
+            if (newText && newText !== oldText) {
+                document.getElementById('raw-original').value = newText;
+                renderAll();
+                await saveToGitHub();
+            }
+        });
+
+        const viewAnal = document.getElementById('view-analysis');
+        const editAnal = document.getElementById('edit-analysis');
+        viewAnal.addEventListener('dblclick', triggerEditAnal);
+        viewAnal.addEventListener('touchstart', e => { if (e.touches.length === 2) triggerEditAnal(); });
+        editAnal.addEventListener('blur', async function() {
+            const newText = this.value.trim();
+            const oldText = document.getElementById('raw-analysis').value.trim();
+            this.style.display = 'none';
+            viewAnal.style.display = 'block';
+            if (newText && newText !== oldText) {
+                document.getElementById('raw-analysis').value = newText;
+                renderAll();
+                await saveToGitHub();
+            }
+        });
+    </script>
+</body>
+</html>
